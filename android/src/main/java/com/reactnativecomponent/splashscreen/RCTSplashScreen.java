@@ -62,12 +62,14 @@ public class RCTSplashScreen {
                     imageView.setScaleType(scaleType);
 
                     dialog = new Dialog(context, isFullScreen ? android.R.style.Theme_Translucent_NoTitleBar_Fullscreen : android.R.style.Theme_Translucent_NoTitleBar);
+                    
+                    if (isFullScreen && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+                        lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+                        dialog.getWindow().setAttributes(lp);
+                        imageView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                    }
 
-//                    if ((getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN)
-//                            == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
-//                        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                    }
                     dialog.setContentView(imageView);
                     dialog.setCancelable(false);
                     dialog.show();
